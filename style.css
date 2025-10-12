@@ -101,3 +101,38 @@ grid-auto-rows: minmax(min-content, auto);
   width: 100%;
   height: auto;
 }
+
+body.cv {
+  font: 100%/1.6 system-ui, sans-serif;
+  letter-spacing: 0.01em;
+}
+body.cv main > section {
+  padding-block: 1rem;
+  border-bottom: 1px solid oklch(92% 0 200); 
+}
+body.cv main > section:last-of-type { border-bottom: 0; }
+body.cv p, body.cv ul { max-width: 70ch; margin: 0.4rem 0; }
+
+
+body.cv h1, body.cv h2, body.cv h3 { line-height: 1.1; text-wrap: balance; }
+body.cv h1 { font-size: clamp(2rem, 5vw, 3rem); margin-block: 0.5rem 0.75rem; }
+body.cv h2 { font-size: 1.25rem; margin-block: 1.25rem 0.5rem; }
+body.cv h3 { font-size: 1.05rem; margin: 0; }
+
+
+body.cv article > header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+}
+body.cv article > header time {
+  margin-left: auto;
+  white-space: nowrap;
+  color: oklch(40% 0.02 200);
+  font-weight: 500;
+}
+
+
+body.cv ul { padding-left: 1.1em; }
+body.cv li { margin-block: 0.25rem; }
