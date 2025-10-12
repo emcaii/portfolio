@@ -49,3 +49,8 @@ nav a:focus-visible {
 .contact-form label > textarea { grid-column: 2; width: 100%; box-sizing: border-box; }
 
 .contact-form button { grid-column: 1 / -1; padding: 0.6em 1em; }
+
+.projects { display: grid;
+grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+gap: 1rem;
+}
