@@ -39,3 +39,17 @@ nav a:focus-visible {
   background-color: oklch(from var(--color-accent) 95% 5% h); /* light tint with same hue */
   outline: none;
 }}
+
+.contact_form input, 
+.contact_form textarea,
+.contact_form button {font: inherit;}
+
+.contact-form label,
+.contact-form input,
+.contact-form textarea,
+.contact-form button { display: block; }
+
+.contact-form input,
+.contact-form textarea { width: 100%; box-sizing: border-box; }
+
+.contact-form label { margin-block: 0.5rem; }
