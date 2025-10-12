@@ -54,3 +54,9 @@ nav a:focus-visible {
 grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
 gap: 1rem;
 }
+
+.projects img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
