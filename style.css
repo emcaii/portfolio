@@ -53,7 +53,19 @@ nav a:focus-visible {
 .projects { display: grid;
 grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
 gap: 1rem;
+
+grid-auto-rows: minmax(min-content, auto);
 }
+
+.projects > article {
+  display: grid;
+  grid-template-rows: subgrid;
+    grid-row: span 3;
+}
+
+.projects > article figure { grid-row: 1; }
+.projects > article h2     { grid-row: 2; margin: 0; }
+.projects > article p      { grid-row: 3; }
 
 .projects img {
   display: block;
