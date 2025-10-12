@@ -44,12 +44,12 @@ nav a:focus-visible {
 .contact_form textarea,
 .contact_form button {font: inherit;}
 
-.contact-form label,
-.contact-form input,
-.contact-form textarea,
-.contact-form button { display: block; }
+.contact-form { display: grid; grid-template-columns: auto 1fr; gap: 1em; }
 
-.contact-form input,
-.contact-form textarea { width: 100%; box-sizing: border-box; }
+.contact-form label { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
 
-.contact-form label { margin-block: 0.5rem; }
+.contact-form label > span { grid-column: 1; align-self: center; }
+.contact-form label > input,
+.contact-form label > textarea { grid-column: 2; width: 100%; box-sizing: border-box; }
+
+.contact-form button { grid-column: 1 / -1; padding: 0.6em 1em; }
