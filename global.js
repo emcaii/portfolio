@@ -29,4 +29,35 @@ let navLinks = $$("nav a");
 let currentLink = navLinks.find(
   (a) => a.host === location.host && a.pathname === location.pathname
 );
+
 currentLink?.classList.add("current");
+document.body.insertAdjacentHTML(
+  "afterbegin",
+  `
+  <label class="color-scheme">
+    Theme:
+    <select>
+      <option value="light dark">Automatic</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </label>
+  `
+);
+
+let select = document.querySelector(".color-scheme select");
+
+if ("colorScheme" in localStorage) {
+  document.documentElement.style.setProperty(
+    "color-scheme",
+    localStorage.colorScheme
+  );
+  select.value = localStorage.colorScheme;
+}
+
+select.addEventListener("input", (event) => {
+  const value = event.target.value;
+  console.log("color scheme changed to", value);
+  document.documentElement.style.setProperty("color-scheme", value);
+  localStorage.colorScheme = value;
+});
