@@ -76,7 +76,7 @@ export async function fetchJSON(url) {
   }
 }
 
-export function renderProjects(project, containerElement) {
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
   if (!containerElement) {
     console.error('renderProjects: containerElement is null or undefined.');
     return;
