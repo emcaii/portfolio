@@ -1,62 +1,75 @@
 [
     {
-        "title": "Lorem ipsum dolor sit.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum expedita quos, quibusdam officiis quasi provident laboriosam odio ea sint, magni aliquam impedit praesentium! Eligendi ea error soluta assumenda optio. Quaerat?"
+    "title": "Personal Portfolio Website",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "A responsive website built to showcase my academic projects, resume, and GitHub profile using HTML, CSS, and JavaScript."
     },
     {
-        "title": "Veniam temporibus non debitis?",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Iusto ipsa, ex molestiae illo pariatur amet placeat eveniet quisquam nulla laborum soluta saepe nemo tenetur ipsum dolorum eum aliquid voluptatum. Veritatis ipsa culpa accusantium quibusdam enim dolor est impedit!"
+    "title": "Data Ethics Presentation",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "A collaborative class project exploring ethical issues in predictive algorithms and fairness in healthcare data models."
     },
     {
-        "title": "Similique vero quo repellendus.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Necessitatibus quam fuga ut, dignissimos eligendi fugit, nulla tempore deserunt sint architecto perspiciatis quod nobis debitis soluta saepe voluptatum incidunt nisi assumenda aspernatur nostrum. Nemo a obcaecati quod ratione dolorem!"
+    "title": "Diabetes Risk Prediction Model",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "A Python-based logistic regression model designed to identify high-risk patients using social and clinical variables."
     },
     {
-        "title": "Quos iste praesentium nostrum.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Ex eius dolorem obcaecati maiores laudantium id assumenda fugit, delectus quis illum architecto harum. Atque reiciendis a adipisci labore esse rem error soluta consectetur qui laudantium quasi, earum corporis quo."
+    "title": "Organic Chemistry Lab: Distillation",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "An experiment analyzing and separating volatile liquids through microscale and fractional distillation methods."
     },
     {
-        "title": "Natus accusamus accusantium quos!",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Quod recusandae repellendus fugit eaque quam, ex a. Vitae harum, repellendus possimus illo a quis dolorum unde repellat, quo non porro sunt ipsam cum. Nam eum est ab beatae sit!"
+     "title": "COGS 108 Final Project",
+     "year": "2025",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+     "description": "Analyzed thousands of recipes to understand the relationship between ingredient and calorie count?"
     },
     {
-        "title": "Cupiditate ipsum enim aliquid.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Non eveniet, quasi saepe distinctio quod labore vero beatae? Minus voluptatibus laborum eveniet expedita vel perspiciatis, doloremque porro quos sed cumque nobis architecto in officia dolorum deleniti fuga ipsum et?"
+    "title": "Rocket Avionics System",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Designed an Arduino-based flight computer capable of recording pressure, altitude, and temperature data during rocket launches."
     },
     {
-        "title": "Dolore perferendis suscipit rerum.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Iure magnam sequi animi vel quidem nemo autem nostrum totam accusamus aut nulla nobis alias corrupti officiis consectetur modi, maiores suscipit sapiente pariatur delectus doloremque? Veniam minima ullam quidem corrupti?"
+    "title": "Interactive SQL Dashboard",
+    "year": "2023",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Developed an interactive SQL dashboard for exploring airline flight performance using joins, subqueries, and aggregate functions."
     },
     {
-        "title": "Harum dolor facilis vel?",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Repellat officiis consectetur iure porro aliquid dolor ipsum officia voluptates, ipsa aut dolorem laborum quia laudantium ab corporis accusantium placeat in? Amet, impedit natus magni repellendus rem fugiat? Asperiores, alias."
+    "title": "History Talks Mini: The Revolutionary War",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Produced a 5-minute historical presentation analyzing naval technology and its impact on Revolutionary War strategies."
     },
     {
-        "title": "Incidunt doloremque voluptatibus natus.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Voluptate quia possimus voluptas architecto, quibusdam rem odio id nulla, sunt pariatur earum commodi eveniet maiores nobis quaerat. Ut fugit hic minus sit iusto. Ipsa, sunt. Rem iusto quae sapiente?"
+    "title": "Machine Learning for Ecology",
+    "year": "2022",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Trained a random forest model to predict species distribution based on environmental and geographical data."
     },
     {
-        "title": "Tenetur dolorum beatae amet.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Officiis, nisi nemo. Ipsa aspernatur quod nisi aliquid, itaque fugiat architecto quo adipisci dolore eos nam quasi quae consequuntur nulla excepturi culpa eveniet rerum ab atque perspiciatis, odio autem nihil."
+    "title": "Statistical Visualization Project",
+    "year": "2023",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Created interactive charts and plots in Python with Matplotlib and Seaborn to visualize income and education correlations."
     },
     {
-        "title": "Itaque ducimus atque inventore.",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Illo, exercitationem repudiandae. Sit, explicabo. Sint, mollitia accusamus? Ad voluptatum praesentium neque, sequi nulla aliquid velit quibusdam reprehenderit et reiciendis sit in veritatis pariatur, temporibus culpa obcaecati minus. Voluptatibus, commodi."
+    "title": "Calculus Visualization App",
+    "year": "2022",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Built an interactive JavaScript app demonstrating derivatives and slope changes in real time."
     },
     {
-        "title": "Error neque dolore sunt?",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Porro quia temporibus commodi sint nostrum laboriosam eos, sequi animi accusantium laborum, esse facere possimus harum vero delectus illo odit tempore fuga? Autem, officia placeat. Perspiciatis sint sunt mollitia vel."
+    "title": "Placeholder Research Project",
+    "year": "2021",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "A placeholder entry representing upcoming independent study or research experience to be added later."
     }
+    
 ]
