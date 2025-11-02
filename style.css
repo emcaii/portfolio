@@ -154,3 +154,10 @@ body.cv article > header time {
 
 body.cv ul { padding-left: 1.1em; }
 body.cv li { margin-block: 0.25rem; }
+
+#projects-plot {
+  max-width: 20em;
+  margin-block: 2em;
+
+  overflow: visible;
+}
