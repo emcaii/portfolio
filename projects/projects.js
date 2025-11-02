@@ -14,11 +14,18 @@ if (titleElement && Array.isArray(projects)) {
   titleElement.textContent = `Projects (${projects.length})`;
 }
 
-let svg = d3.select('#projects-pie-plot');
+const svg = d3.select('#projects-plot');
 
-let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+let data = [1, 2, 3, 4, 5, 5];
+let sliceGen = d3.pie();
+let arcData = sliceGen(data); 
+let arcGen = d3.arc().innerRadius(0).outerRadius(50);
+
+let colorScale = d3.scaleOrdinal(d3.schemeTableau10);
 
 svg
-  .append('path')
-  .attr('d', arcGenerator({ startAngle: 0, endAngle: 2 * Math.PI }))
-  .attr('fill', 'red');
+  .selectAll('path')
+  .data(arcData)
+  .join('path')
+  .attr('d', arcGen)
+  .attr('fill', (d, i) => colorScale(i));
