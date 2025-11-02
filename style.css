@@ -194,3 +194,22 @@ body.cv li { margin-block: 0.25rem; }
   background-color: var(--color);
   border-radius: 0.25em;
 }
+
+path {
+  transition: 300ms;
+  cursor: pointer;
+}
+
+
+svg:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+}
