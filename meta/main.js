@@ -124,7 +124,7 @@ function renderScatterPlot(data, commits) {
     .domain([0, 24])
     .range([usableArea.bottom, usableArea.top]);
 
-    const sortedCommits = d3.sort(commitData, (d) => -d.totalLines);
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
 
 const [minLines, maxLines] = d3.extent(sortedCommits, (d) => d.totalLines);
 
@@ -164,19 +164,7 @@ dots
   gridlines.call(
     d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width)
   );
-
-  svg
-    .append('g')
-    .attr('class', 'dots')
-    .selectAll('circle')
-    .data(commits)
-    .join('circle')
-    .attr('cx', (d) => xScale(d.datetime))
-    .attr('cy', (d) => yScale(d.hourFrac))
-    .attr('r', 5)
-    .attr('fill', 'steelblue')
-    .attr('opacity', 0.7);
-
+  
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3
     .axisLeft(yScale)
