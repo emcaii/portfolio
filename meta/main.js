@@ -29,10 +29,10 @@ function processCommits(data) {
       totalLines: lines.length,
     };
 
-    // Add the full line data as a hidden property
+
     Object.defineProperty(commitObj, 'lines', {
       value: lines,
-      enumerable: false,  // hidden from console display
+      enumerable: false, 
       writable: false,
       configurable: true,
     });
@@ -55,17 +55,88 @@ function renderCommitInfo(data, commits) {
   dl.append('dt').text('Total commits');
   dl.append('dd').text(commits.length);
 
-  // Number of distinct files
   dl.append('dt').text('Files in codebase');
   dl.append('dd').text(d3.group(data, d => d.file).size);
 
-  // Average line length
   dl.append('dt').text('Average line length (chars)');
   dl.append('dd').text(d3.mean(data, d => d.length).toFixed(1));
 
-  // Maximum depth
   dl.append('dt').text('Maximum depth');
   dl.append('dd').text(d3.max(data, d => d.depth));
 }
 
-renderCommitInfo(data, commits);
+function renderScatterPlot(data, commits) {
+  const width = 1000;
+  const height = 600;
+  const margin = { top: 10, right: 10, bottom: 30, left: 50 };
+
+  const usableArea = {
+    top: margin.top,
+    right: width - margin.right,
+    bottom: height - margin.bottom,
+    left: margin.left,
+    width: width - margin.left - margin.right,
+    height: height - margin.top - margin.bottom,
+  };
+
+  const svg = d3
+    .select('#chart')
+    .append('svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .style('overflow', 'visible');
+
+  const xScale = d3
+    .scaleTime()
+    .domain(d3.extent(commits, (d) => d.datetime))
+    .range([usableArea.left, usableArea.right])
+    .nice();
+
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, 24])
+    .range([usableArea.bottom, usableArea.top]);
+
+  const gridlines = svg
+    .append('g')
+    .attr('class', 'gridlines')
+    .attr('transform', `translate(${usableArea.left}, 0)`);
+
+  gridlines.call(
+    d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width)
+  );
+
+  svg
+    .append('g')
+    .attr('class', 'dots')
+    .selectAll('circle')
+    .data(commits)
+    .join('circle')
+    .attr('cx', (d) => xScale(d.datetime))
+    .attr('cy', (d) => yScale(d.hourFrac))
+    .attr('r', 5)
+    .attr('fill', 'steelblue')
+    .attr('opacity', 0.7);
+
+  const xAxis = d3.axisBottom(xScale);
+  const yAxis = d3
+    .axisLeft(yScale)
+    .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
+
+  svg
+    .append('g')
+    .attr('transform', `translate(0, ${usableArea.bottom})`)
+    .call(xAxis);
+
+  svg
+    .append('g')
+    .attr('transform', `translate(${usableArea.left}, 0)`)
+    .call(yAxis);
+}
+
+(async () => {
+  const data = await loadData();
+  const commits = processCommits(data);
+
+  renderCommitInfo(data, commits);
+  renderScatterPlot(data, commits);
+})();

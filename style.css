@@ -231,3 +231,12 @@ svg:has(path:hover) path:not(:hover) {
 .stats dd {
   margin: 0;
 }
+
+.gridlines line {
+  stroke: oklch(70% 0.02 200);
+  stroke-opacity: 0.3;
+}
+
+.gridlines path {
+  display: none;
+}
