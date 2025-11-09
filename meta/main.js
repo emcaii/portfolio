@@ -46,6 +46,34 @@ let commits = processCommits(data);
 
 console.log(commits);
 
+function renderTooltipContent(commit) {
+  const link = document.getElementById('commit-link');
+  const date = document.getElementById('commit-date');
+  const time = document.getElementById('commit-time');
+  const author = document.getElementById('commit-author');
+  const lines = document.getElementById('commit-lines');
+
+  if (!commit || Object.keys(commit).length === 0) return;
+
+  link.href = commit.url;
+  link.textContent = commit.id.slice(0, 7);
+  date.textContent = commit.datetime?.toLocaleDateString('en', { dateStyle: 'full' });
+  time.textContent = commit.datetime?.toLocaleTimeString('en', { timeStyle: 'short' });
+  author.textContent = commit.author;
+  lines.textContent = commit.totalLines;
+}
+
+function updateTooltipVisibility(isVisible) {
+  const tooltip = document.getElementById('commit-tooltip');
+  tooltip.hidden = !isVisible;
+}
+
+function updateTooltipPosition(event) {
+  const tooltip = document.getElementById('commit-tooltip');
+  tooltip.style.left = `${event.clientX + 15}px`;
+  tooltip.style.top = `${event.clientY + 15}px`;
+}
+
 function renderCommitInfo(data, commits) {
   const dl = d3.select('#stats').append('dl').attr('class', 'stats');
 
@@ -95,6 +123,38 @@ function renderScatterPlot(data, commits) {
     .scaleLinear()
     .domain([0, 24])
     .range([usableArea.bottom, usableArea.top]);
+
+    const sortedCommits = d3.sort(commitData, (d) => -d.totalLines);
+
+const [minLines, maxLines] = d3.extent(sortedCommits, (d) => d.totalLines);
+
+const rScale = d3
+  .scaleSqrt()
+  .domain([minLines, maxLines])
+  .range([2, 30]);
+
+const dots = svg.append('g').attr('class', 'dots');
+
+dots
+  .selectAll('circle')
+  .data(sortedCommits)
+  .join('circle')
+  .attr('cx', (d) => xScale(d.datetime))
+  .attr('cy', (d) => yScale(d.hourFrac))
+  .attr('r', (d) => rScale(d.totalLines)) 
+  .attr('fill', 'steelblue')
+  .style('fill-opacity', 0.7) 
+  .on('mouseenter', (event, commit) => {
+    d3.select(event.currentTarget).style('fill-opacity', 1);
+    renderTooltipContent(commit);
+    updateTooltipVisibility(true);
+    updateTooltipPosition(event);
+  })
+  .on('mousemove', (event) => updateTooltipPosition(event))
+  .on('mouseleave', (event) => {
+    d3.select(event.currentTarget).style('fill-opacity', 0.7);
+    updateTooltipVisibility(false);
+  }); 
 
   const gridlines = svg
     .append('g')
