@@ -156,6 +156,72 @@ dots
     updateTooltipVisibility(false);
   }); 
 
+const brush = d3.brush().on('start brush end', brushed);
+svg.call(brush);
+svg.selectAll('.dots, .overlay ~ *').raise();
+
+function isCommitSelected(selection, commit) {
+  if (!selection) return false;
+
+  const [[x0, y0], [x1, y1]] = selection;
+  const x = xScale(commit.datetime);
+  const y = yScale(commit.hourFrac);
+
+  return x0 <= x && x <= x1 && y0 <= y && y <= y1;
+}
+
+function renderSelectionCount(selection) {
+  const selected = selection
+    ? commits.filter((d) => isCommitSelected(selection, d))
+    : [];
+
+  const countEl = document.querySelector('#selection-count');
+  countEl.textContent = `${
+    selected.length || 'No'
+  } commits selected`;
+
+  return selected;
+}
+
+function renderLanguageBreakdown(selection) {
+  const selected = selection
+    ? commits.filter((d) => isCommitSelected(selection, d))
+    : [];
+  const container = document.getElementById('language-breakdown');
+
+  if (selected.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const lines = selected.flatMap((d) => d.lines);
+  const breakdown = d3.rollup(
+    lines,
+    (v) => v.length,
+    (d) => d.type
+  );
+
+  container.innerHTML = '';
+  for (const [lang, count] of breakdown) {
+    const proportion = count / lines.length;
+    const formatted = d3.format('.1~%')(proportion);
+    container.innerHTML += `
+      <dt>${lang}</dt>
+      <dd>${count} lines (${formatted})</dd>`;
+  }
+}
+
+function brushed(event) {
+  const selection = event.selection;
+
+  d3.selectAll('circle').classed('selected', (d) =>
+    isCommitSelected(selection, d)
+  );
+
+  renderSelectionCount(selection);
+  renderLanguageBreakdown(selection);
+}
+
   const gridlines = svg
     .append('g')
     .attr('class', 'gridlines')
@@ -164,7 +230,7 @@ dots
   gridlines.call(
     d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width)
   );
-  
+
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3
     .axisLeft(yScale)
