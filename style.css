@@ -213,3 +213,21 @@ svg:has(path:hover) path:not(:hover) {
 .selected:is(path) {
   fill: var(--color);
 }
+
+.stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25em 1em;
+  margin-block: 2em;
+  border: 1px solid oklch(80% 0.02 200);
+  border-radius: 0.5em;
+  padding: 1em;
+}
+
+.stats dt {
+  font-weight: bold;
+}
+
+.stats dd {
+  margin: 0;
+}
