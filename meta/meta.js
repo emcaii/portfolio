@@ -254,3 +254,34 @@ function brushed(event) {
   renderCommitInfo(data, commits);
   renderScatterPlot(data, commits);
 })();
+
+let commitProgress = 100;
+
+let timeScale = d3
+  .scaleTime()
+  .domain([
+    d3.min(commits, (d) => d.datetime),
+    d3.max(commits, (d) => d.datetime),
+  ])
+  .range([0, 100]);
+let commitMaxTime = timeScale.invert(commitProgress);
+
+let filteredCommits = commits;
+
+function onTimeSliderChange(){
+    const slider = document.getElementById('commit-progress');
+    commitProgress = +slider.value
+    commitMaxTime = timeScale.invert(commitProgress);
+
+    document.getElementById('commit-time').textContent = commitMaxTime.toLocaleString(
+        'en-US', {
+            dateStyle: "long",
+            timeStyle: "short"
+        });
+    
+    filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+}
+
+document.getElementById('commit-progress').addEventListener('input', onTimeSliderChange)
+
+onTimeSliderChange();
