@@ -1,5 +1,13 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
+let xScale;
+let yScale;
+
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
+
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
+
+
 async function loadData() {
   const data = await d3.csv('loc.csv', (row) => ({
     ...row,
@@ -49,7 +57,7 @@ console.log(commits);
 function renderTooltipContent(commit) {
   const link = document.getElementById('commit-link');
   const date = document.getElementById('commit-date');
-  const time = document.getElementById('commit-time');
+  const time = document.getElementById('tooltip-time');
   const author = document.getElementById('commit-author');
   const lines = document.getElementById('commit-lines');
 
@@ -113,20 +121,20 @@ function renderScatterPlot(data, commits) {
     .attr('viewBox', `0 0 ${width} ${height}`)
     .style('overflow', 'visible');
 
-  const xScale = d3
+  xScale = d3
     .scaleTime()
     .domain(d3.extent(commits, (d) => d.datetime))
     .range([usableArea.left, usableArea.right])
     .nice();
 
-  const yScale = d3
+  yScale = d3
     .scaleLinear()
     .domain([0, 24])
     .range([usableArea.bottom, usableArea.top]);
 
-    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+  const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
 
-const [minLines, maxLines] = d3.extent(sortedCommits, (d) => d.totalLines);
+  const [minLines, maxLines] = d3.extent(sortedCommits, (d) => d.totalLines);
 
 const rScale = d3
   .scaleSqrt()
@@ -137,7 +145,7 @@ const dots = svg.append('g').attr('class', 'dots');
 
 dots
   .selectAll('circle')
-  .data(sortedCommits)
+  .data(sortedCommits, (d) => d.id)
   .join('circle')
   .attr('cx', (d) => xScale(d.datetime))
   .attr('cy', (d) => yScale(d.hourFrac))
@@ -238,13 +246,57 @@ function brushed(event) {
 
   svg
     .append('g')
+    .attr('class','x-axis')
     .attr('transform', `translate(0, ${usableArea.bottom})`)
     .call(xAxis);
 
   svg
     .append('g')
+    .attr('class','y-axis')
     .attr('transform', `translate(${usableArea.left}, 0)`)
     .call(yAxis);
+}
+
+function updateScatterPlot(data, commits) {
+  const svg = d3.select('#chart').select('svg');
+
+  // Update xScale domain
+  xScale = xScale.domain(d3.extent(commits, (d) => d.datetime));
+
+  // Update rScale for bubble sizes
+  const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
+
+  // Redraw x-axis
+  const xAxis = d3.axisBottom(xScale);
+  const xAxisGroup = svg.select('g.x-axis');
+  xAxisGroup.selectAll('*').remove();
+  xAxisGroup.call(xAxis);
+
+  // Update dots
+  const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+  const dots = svg.select('g.dots');
+
+  dots
+    .selectAll('circle')
+    .data(sortedCommits, (d) => d.id)
+    .join('circle')
+    .attr('cx', (d) => xScale(d.datetime))
+    .attr('cy', (d) => yScale(d.hourFrac))
+    .attr('r', (d) => rScale(d.totalLines))
+    .attr('fill', 'steelblue')
+    .style('fill-opacity', 0.7)
+    .on('mouseenter', (event, commit) => {
+      d3.select(event.currentTarget).style('fill-opacity', 1);
+      renderTooltipContent(commit);
+      updateTooltipVisibility(true);
+      updateTooltipPosition(event);
+    })
+    .on('mousemove', (event) => updateTooltipPosition(event))
+    .on('mouseleave', (event) => {
+      d3.select(event.currentTarget).style('fill-opacity', 0.7);
+      updateTooltipVisibility(false);
+    });
 }
 
 (async () => {
@@ -254,6 +306,26 @@ function brushed(event) {
   renderCommitInfo(data, commits);
   renderScatterPlot(data, commits);
 })();
+
+function onStepEnter(response) {
+  const commit = response.element.__data__;
+  const commitTime = commit.datetime;
+
+  // Filter up to this commit
+  filteredCommits = commits.filter((d) => d.datetime <= commitTime);
+
+  // Update visuals
+  updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+}
+
+const scroller = scrollama();
+scroller
+  .setup({
+    container: '#scrolly-1',
+    step: '#scrolly-1 .step',
+  })
+  .onStepEnter(onStepEnter);
 
 let commitProgress = 100;
 
@@ -268,6 +340,35 @@ let commitMaxTime = timeScale.invert(commitProgress);
 
 let filteredCommits = commits;
 
+function updateFileDisplay(filteredCommits) {
+  let lines = filteredCommits.flatMap((d) => d.lines);
+  let files = d3
+  .groups(lines, (d) => d.file)
+  .map(([name, lines]) => ({ name, lines }))
+  .sort((a, b) => b.lines.length - a.lines.length);
+
+    let filesContainer = d3
+    .select('#files')
+    .selectAll('div')
+    .data(files, (d) => d.name)
+    .join(
+      (enter) =>
+        enter.append('div').call((div) => {
+          div.append('dt').append('code');
+          div.append('dd');
+        })
+    );
+  filesContainer.select('dt > code')
+  .html((d) => `${d.name}<small>${d.lines.length} lines</small>`);
+
+  filesContainer
+  .select('dd')
+  .selectAll('div')
+  .data((d) => d.lines)
+  .join('div')
+  .attr('class', 'loc')
+  .attr('style', (d) => `--color: ${colors(d.type)}`);}
+
 function onTimeSliderChange(){
     const slider = document.getElementById('commit-progress');
     commitProgress = +slider.value
@@ -280,8 +381,34 @@ function onTimeSliderChange(){
         });
     
     filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+    updateScatterPlot(data, filteredCommits);
+    updateFileDisplay(filteredCommits);
 }
 
 document.getElementById('commit-progress').addEventListener('input', onTimeSliderChange)
 
 onTimeSliderChange();
+
+d3.select('#scatter-story')
+  .selectAll('.step')
+  .data(commits)
+  .join('div')
+  .attr('class', 'step')
+  .html((d, i) => `
+    <p>
+      On ${d.datetime.toLocaleString('en', {
+        dateStyle: 'full',
+        timeStyle: 'short',
+      })},
+      I made <a href="${d.url}" target="_blank">${
+        i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+      }</a>.
+      I edited ${d.totalLines} lines across ${
+        d3.rollups(
+          d.lines,
+          (D) => D.length,
+          (d) => d.file
+        ).length
+      } files.
+    </p>
+  `);
